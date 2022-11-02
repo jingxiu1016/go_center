@@ -16,38 +16,79 @@ import (
 
 type App struct {
 	dao *dao.App //数据持久层
+	ctx *gin.Context
 }
 
-// Status @Method[Post] @Doc[用于获取实际] @Middleware[Auth|JWT]
-func (a *App) Status(c *gin.Context) {
+func NewAppHandle(c *gin.Context) *App {
+	return &App{
+		ctx: c,
+	}
+}
+
+// Status
+// @Group[app]
+// @Route[status]
+// @Method[Post]
+// @Middleware[Auth|JWT]
+// @Doc[用于更新应用状态]
+func (a *App) Status() {
 	//TODO implement me
 	panic("implement me")
 }
 
-// Create @Method[Post] @Doc[用于创建app] @Middleware[Auth|JWT]
-func (a *App) Create(c *gin.Context) {
-	if err := c.ShouldBind(a.dao); err != nil {
+// Create
+// @Group[app]
+// @Route[create]
+// @Method[Post]
+// @Middleware[Auth|JWT]
+// @Doc[用于更新应用状态]
+func (a *App) Create() {
+	if err := a.ctx.ShouldBind(a.dao); err != nil {
 		services.SvcContext.Log.Fatal("应用创建请求数据绑定失败")
 		return
 	}
 }
 
-func (a *App) List(c *gin.Context) {
+// List
+// @Group[app]
+// @Route[list]
+// @Method[get]
+// @Middleware[Auth|JWT]
+// @Doc[获取应用列表]
+func (a *App) List() {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a *App) Get(c *gin.Context) {
+// Info
+// @Group[app]
+// @Route[info]
+// @Method[get]
+// @Middleware[Auth|JWT]
+// @Doc[获取应用列表的详情]
+func (a *App) Info() {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a *App) Delete(c *gin.Context) {
+// Delete
+// @Group[app]
+// @Route[delete]
+// @Method[delete]
+// @Middleware[Auth|JWT]
+// @Doc[删除应用]
+func (a *App) Delete() {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (a *App) Update(c *gin.Context) {
+// Update
+// @Group[app]
+// @Route[update]
+// @Method[post]
+// @Middleware[Auth|JWT]
+// @Doc[更新应用详情]
+func (a *App) Update() {
 	//TODO implement me
 	panic("implement me")
 }

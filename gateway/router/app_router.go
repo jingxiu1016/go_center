@@ -11,5 +11,4 @@ package router
 import "github.com/gin-gonic/gin"
 
 func AppRouter(c *gin.Engine) {
-
 }

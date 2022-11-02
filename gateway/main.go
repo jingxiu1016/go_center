@@ -21,7 +21,11 @@ func main() {
 		panic("config file read ersor!")
 		return
 	}
+	// 2. generate route code from handle code comments
+
+	// 3. start some services
 	services.SvcContext = services.NewContext(config.C)
+	// 4. start gin router
 	r := router.InitRouter()
 	if err := r.Run(config.C.Gateway.Listen); err != nil {
 		fmt.Printf("startup service failed, err:%v\n\n", err)
