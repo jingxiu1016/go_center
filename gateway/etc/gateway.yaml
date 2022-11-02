@@ -1,0 +1,16 @@
+Gateway:
+  Listen: 127.0.0.1:8080
+
+DB:
+  Type: "mysql"
+  Source: center:center@center@tcp(43.138.235.141:3306)/maile?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+Cache:
+  Type: "redis"
+  Version: ""
+  Source:
+Rpc:
+  App:
+    Host: 127.0.0.1:8000
+Jwt:
+  Secret: 093Tmd0004IS1O19DS200rnCR14Tmd0F1
+  Expire: 259200
