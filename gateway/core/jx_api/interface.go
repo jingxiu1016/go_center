@@ -8,11 +8,13 @@
 
 package jx_api
 
+import "github.com/gin-gonic/gin"
+
 type APIHandler interface {
-	Create()
-	List()
-	Info()
-	Delete()
-	Update()
-	Status()
+	Create(c *gin.Context)
+	List(c *gin.Context)
+	Info(c *gin.Context)
+	Delete(c *gin.Context)
+	Update(c *gin.Context)
+	Status(c *gin.Context)
 }

@@ -36,7 +36,7 @@ func initGin() *gin.Engine {
 // 加载路由
 func loadRoute(r *gin.Engine) {
 	//UserRoute(r)
-	AppRouter(r)
+	//AppRouter(r)
 	//for _, handler := range regList {
 	//	switch handler.method {
 	//	case http.MethodGet:
