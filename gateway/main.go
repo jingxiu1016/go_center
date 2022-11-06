@@ -8,18 +8,17 @@
 
 package main
 
-import (
-	"gateway/core/jx_api"
-)
+import "gateway/core/jx_api"
 
 func main() {
 	// 1. read config from yaml
-	//if err := config.ConfigInit("etc/gateway.yaml"); err != nil {
+	//if err := config.ConfigInit("./gateway.yaml"); err != nil {
 	//	panic("config file read ersor!")
 	//	return
 	//}
 	// 2. generate route code from handle code comments
-	jx_api.Gen()
+	//jx_api.GenRouters()
+	jx_api.JingXiu()
 	// 3. start some services
 	//services.SvcContext = services.NewContext(config.C)
 	// 4. start gin router

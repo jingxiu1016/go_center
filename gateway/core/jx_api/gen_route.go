@@ -13,6 +13,7 @@ package jx_api
 
 import (
 	"bufio"
+	"fmt"
 	"html/template"
 	"io"
 	"os"
@@ -21,12 +22,12 @@ import (
 )
 
 type GenRoute struct {
-	FuncName   string   // 解析匹配到的方法名称
-	Group      string   // 解析匹配到的路由组名称
-	Route      string   // 解析匹配到的路由名
-	Method     string   // 解析匹配到的HTTP方法名
-	MiddleWare []string // 解析匹配到的中间件方法
-	Doc        string   // 解析文档
+	Handle     string // 解析匹配到的方法名称
+	Group      string // 解析匹配到的路由组名称
+	Route      string // 解析匹配到的路由名
+	Method     string // 解析匹配到的HTTP方法名
+	Middleware string // 解析匹配到的中间件方法
+	Doc        string // 解析文档
 }
 
 var handlePath string
@@ -35,7 +36,7 @@ var templatePath string
 var infoChan = make(chan []string)
 var register = make(map[string][]*GenRoute)
 
-func Gen() {
+func GenRouters() {
 	workspace, _ := os.Getwd()
 	handlePath = workspace + "\\handle"
 	routerPath = workspace + "\\router"
@@ -50,7 +51,8 @@ func Gen() {
 func rangeDir(path string) {
 	dir, err := os.ReadDir(path)
 	if err != nil {
-		panic("接口目录扫描失败！" + err.Error())
+		//panic("接口目录扫描失败！" + err.Error())
+		fmt.Println("接口目录扫描失败！", err.Error())
 	}
 	for _, item := range dir {
 		if item.IsDir() {
@@ -91,7 +93,7 @@ func openFile(file string) []*GenRoute {
 func matchKeywords(info []string) *GenRoute {
 	first := trimPrefix(info[0])
 	temp := &GenRoute{
-		FuncName: first,
+		Handle: first,
 	}
 	for _, item := range APIMatchMapping {
 		for _, fo := range info[1:] {
@@ -108,11 +110,11 @@ func matchKeywords(info []string) *GenRoute {
 				case "@Method":
 					method := trimPrefix(fo)
 					left, right := indexBrackets(method)
-					temp.Method = method[left+1 : right]
+					temp.Method = strings.ToUpper(method[left+1 : right])
 				case "@Middleware":
 					mw := trimPrefix(fo)
 					left, right := indexBrackets(mw)
-					temp.MiddleWare = strings.Split(mw[left+1:right], "|")
+					temp.Middleware = transitMiddle(strings.Split(mw[left+1:right], "|"))
 				case "@Doc":
 					doc := trimPrefix(fo)
 					left, right := indexBrackets(doc)
@@ -130,18 +132,15 @@ func writeRouterFile(path, key string, value []*GenRoute) {
 	funcName := firstUpper(key) + "Router"
 	//写入文件时，使用带缓存的 *Writer
 	data := map[string]interface{}{
-		"filename":   filename,
-		"filepath":   path,
-		"date":       time.Now().Format("2016/01/01"),
-		"doc":        key + " 路由",
-		"funcName":   funcName,
-		"higherDir":  key,
-		"pak":        firstUpper(key),
-		"group":      value[0].Group,
-		"httpMethod": strings.ToUpper(value[0].Method),
-		"route":      value[0].Route,
-		"middleware": transitMiddle(value[0].MiddleWare),
-		"handle":     value[0].FuncName,
+		"filename":  filename,
+		"filepath":  path,
+		"date":      time.Now().Format("2016/01/01"),
+		"doc":       key + " 路由",
+		"funcName":  funcName,
+		"higherDir": key,
+		"pak":       firstUpper(key),
+		"group":     key,
+		"routers":   value,
 	}
 	tmp := template.Must(template.ParseFiles(templatePath + "\\route.tpl"))
 	create, err := os.OpenFile(path+"\\"+filename, os.O_CREATE, 0666)

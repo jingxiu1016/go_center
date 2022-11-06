@@ -16,8 +16,9 @@ import (
 
 func {{.funcName}}(c *gin.Engine){
     instance := {{.higherDir}}.New{{.pak}}Handle()
-    group := c.Group("{{.group}}")
-    {
-        group.{{.httpMethod}}("{{.route}}",{{.middleware}},instance.{{.handle}})
+    group := c.Group("/{{.group}}/")
+    { {{range $k,$v := .routers}}
+       // {{$v.Doc}}
+       group.{{$v.Method}}("{{$v.Route}}",{{$v.Middleware}}, instance.{{$v.Handle}}){{end}}
     }
 }

@@ -1,5 +1,5 @@
 /**
-* @file: config.go ==> model/config
+* @file: config.go ==> data/config
 * @package: config
 * @author: jingxiu
 * @since: 2022/11/2
@@ -30,6 +30,7 @@ type (
 	}
 	// Rpc 链接配置
 	Rpc struct {
+		// TODO register your gRpc Client config
 		App struct {
 			Host string `yaml:"Host"`
 		} `yaml:"App"`

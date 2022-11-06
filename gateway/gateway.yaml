@@ -3,7 +3,7 @@ Gateway:
 
 DB:
   Type: "mysql"
-  Source: center:center@center@tcp(43.138.235.141:3306)/maile?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  Source: center:center@tcp(43.138.235.141:3306)/center?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 Cache:
   Type: "redis"
   Version: ""
